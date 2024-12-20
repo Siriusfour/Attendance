@@ -1,0 +1,19 @@
+Mode:
+  develop: true
+
+server:
+  port: 2333
+
+log:
+  MaxSize: 10    #每个日志文件最大容量，MB
+  MaxBackups: 10 #保留旧文件的最大个数
+
+DB:
+  DNS: root:123456@tcp(127.0.0.1:3306)/attendance?charset=utf8mb4&parseTime=True&loc=Local
+  ConnMaxLifetime:
+  MaxOpenConns: 100
+  MaxIdleConns: 100
+
+Jwt:
+  OutTime: 30  #token有效时长
+  Key: bookaanggggg

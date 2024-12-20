@@ -1,26 +1,28 @@
 package main
 
 import (
-	"GrpcTest/Server"
-	"GrpcTest/proto"
+	BaseController "GrpcTest/Handler/Base/Base_Controller"
+	"GrpcTest/InitConfig"
+	"GrpcTest/MyProto"
 	"fmt"
-	"log"
-
 	"google.golang.org/grpc"
+	"log"
 	"net"
 )
 
 func main() {
 
 	fmt.Println("===start===")
+
 	Listener, err := net.Listen("tcp", ":5551")
 	if err != nil {
 		panic("5551启动错误：" + err.Error())
 	}
 
-	grpcServer := grpc.NewServer()
+	InitConfig.InitConfig()
 
-	proto.RegisterHelloServer(grpcServer, &Server.Server{})
+	grpcServer := grpc.NewServer()
+	MyProto.RegisterViewServer(grpcServer, &BaseController.Base_Controller{})
 	err = grpcServer.Serve(Listener)
 
 	fmt.Println("Server is listening on port :50051")
