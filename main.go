@@ -1,8 +1,8 @@
 package main
 
 import (
-	BaseController "GrpcTest/Handler/Base/Base_Controller"
-	"GrpcTest/InitConfig"
+	BaseController "GrpcTest/Handler/Base/BaseController"
+	"GrpcTest/MyConfig"
 	"GrpcTest/MyProto"
 	"fmt"
 	"google.golang.org/grpc"
@@ -19,7 +19,7 @@ func main() {
 		panic("5551启动错误：" + err.Error())
 	}
 
-	InitConfig.InitConfig()
+	MyConfig.InitConfig()
 
 	grpcServer := grpc.NewServer()
 	MyProto.RegisterViewServer(grpcServer, &BaseController.Base_Controller{})

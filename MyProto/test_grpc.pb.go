@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ViewClient interface {
 	Login(ctx context.Context, in *UserID, opts ...grpc.CallOption) (*ApplicationArray, error)
+	Applications(ctx context.Context, in *Application, opts ...grpc.CallOption) (*Succee, error)
 }
 
 type viewClient struct {
@@ -42,11 +43,21 @@ func (c *viewClient) Login(ctx context.Context, in *UserID, opts ...grpc.CallOpt
 	return out, nil
 }
 
+func (c *viewClient) Applications(ctx context.Context, in *Application, opts ...grpc.CallOption) (*Succee, error) {
+	out := new(Succee)
+	err := c.cc.Invoke(ctx, "/Business.View/Applications", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ViewServer is the server API for View service.
 // All implementations must embed UnimplementedViewServer
 // for forward compatibility
 type ViewServer interface {
 	Login(context.Context, *UserID) (*ApplicationArray, error)
+	Applications(context.Context, *Application) (*Succee, error)
 	mustEmbedUnimplementedViewServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedViewServer struct {
 
 func (UnimplementedViewServer) Login(context.Context, *UserID) (*ApplicationArray, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedViewServer) Applications(context.Context, *Application) (*Succee, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Applications not implemented")
 }
 func (UnimplementedViewServer) mustEmbedUnimplementedViewServer() {}
 
@@ -88,6 +102,24 @@ func _View_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 	return interceptor(ctx, in, info, handler)
 }
 
+func _View_Applications_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Application)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ViewServer).Applications(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Business.View/Applications",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ViewServer).Applications(ctx, req.(*Application))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // View_ServiceDesc is the grpc.ServiceDesc for View service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var View_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _View_Login_Handler,
+		},
+		{
+			MethodName: "Applications",
+			Handler:    _View_Applications_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

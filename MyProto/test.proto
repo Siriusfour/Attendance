@@ -8,11 +8,19 @@ import "google/protobuf/timestamp.proto";
 
 service View {
 
-  rpc Login(UserID) returns (ApplicationArray);
+  rpc Login        (UserID)        returns (ApplicationArray);
+  rpc Applications(Application)    returns (succee);
+
 }
 
 message UserID {
   int32 UserID=1;
+}
+
+
+message succee{
+  bool   flag    =1;
+  string ErrInfo =2;
 }
 
 
@@ -30,5 +38,6 @@ message Application {
   google.protobuf.Timestamp end_time = 5;
   int32 department = 6;
   int32 leave_type = 7;
+  int32   state    =8 ;
 
 }

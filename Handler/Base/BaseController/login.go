@@ -1,8 +1,8 @@
 package BaseController
 
 import (
-	"GrpcTest/InitConfig"
 	"GrpcTest/Model"
+	"GrpcTest/MyConfig"
 	"GrpcTest/MyProto"
 	"context"
 )
@@ -23,19 +23,19 @@ func (controller *Base_Controller) Login(ctx context.Context, UserID *MyProto.Us
 	var ApplicationArray MyProto.ApplicationArray
 	var UserInfo Model.User
 
-	err := InitConfig.DB.Where("user_id=?", UserID.UserID).First(&UserInfo).Error
+	err := MyConfig.DB.Where("user_id=?", UserID.UserID).First(&UserInfo).Error
 	if err != nil {
 		return &ApplicationArray, err
 	}
 
 	if UserInfo.Leader != 0 {
-		err = InitConfig.DB.Where("Department=?", UserInfo.Leader).First(&ApplicationArray.ApplicationsList).Error
+		err = MyConfig.DB.Where("Department=?", UserInfo.Leader).First(&ApplicationArray.ApplicationsList).Error
 		if err != nil {
 			return &ApplicationArray, err
 		}
 	}
 
-	err = InitConfig.DB.Where("user_id=?", UserID).First(&ApplicationArray.MyApplications).Error
+	err = MyConfig.DB.Where("user_id=?", UserID).First(&ApplicationArray.MyApplications).Error
 	if err != nil {
 		return &ApplicationArray, err
 	}

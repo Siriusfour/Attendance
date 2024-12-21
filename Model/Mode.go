@@ -1,6 +1,9 @@
 package Model
 
-import "time"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type User struct {
 	UserID       int    `gorm:"type:int;not null"`
@@ -11,6 +14,7 @@ type User struct {
 }
 
 type Application struct {
+	gorm.Model
 	Name       string    `gorm:"type:varchar(20);not null"`
 	UserID     int       `gorm:"type:int;not null"`
 	Message    string    `gorm:"type:varchar(255);not null"`

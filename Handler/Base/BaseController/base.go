@@ -16,7 +16,7 @@ type Applications struct {
 	Leave_type int       `json:"Leave_type" binding:"required"`
 }
 
-// Base 控制器
+// Base_Controller Base 控制器
 type Base_Controller struct {
 	MyProto.UnsafeViewServer
 }
@@ -32,7 +32,3 @@ func (Base_Controller *Base_Controller) IsTokenValid(tokenString string) (bool, 
 }
 
 func (Base_Controller *Base_Controller) Hello() {}
-
-func New_Base_Controller() *Base_Controller {
-	return &Base_Controller{}
-}
